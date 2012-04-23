@@ -18805,7 +18805,7 @@
         result += this.cstrs.join('\n') + '\n';
       }
 
-      result += "function $constr() {\n";
+      /*result += "function $constr() {\n";
       var cstrsIfs = [];
       for (i = 0, l = this.cstrs.length; i < l; ++i) {
         var paramsLength = this.cstrs[i].params.params.length;
@@ -18817,7 +18817,7 @@
       }
       // ??? add check if length is 0, otherwise fail
       result += "$superCstr();\n}\n";
-      result += "$constr.apply(null, arguments);\n";
+      result += "$constr.apply(null, arguments);\n";*/
 
       replaceContext = oldContext;
        
