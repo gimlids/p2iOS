@@ -18922,7 +18922,8 @@
       return globalClass;
     }
 
-    function AstMethod(name, params, body) {
+    function AstMethod(returnType, name, params, body) {
+      this.returnType = returnType;
       this.name = name;
       this.params = params;
       this.body = body;
@@ -18933,8 +18934,10 @@
       replaceContext = function (subject) {
         return paramNames.hasOwnProperty(subject.name) ? subject.name : oldContext(subject);
       };
-      var result = "function " + this.name + this.params + " " + this.body + "\n" +
-        "$p." + this.name + " = " + this.name + ";";
+      var result = this.returnType + " " + this.name + this.params + " " + this.body + "\n";
+        
+      //var result = "function " + this.name + this.params + " " + this.body + "\n" +
+      //  "$p." + this.name + " = " + this.name + ";";
       replaceContext = oldContext;
       return result;
     };
@@ -18943,7 +18946,7 @@
       var m = methodsRegex.exec(method);
       var result =
       methodsRegex.lastIndex = 0;
-      return new AstMethod(m[3], transformParams(atoms[getAtomIndex(m[4])]),
+      return new AstMethod(m[2], m[3], transformParams(atoms[getAtomIndex(m[4])]),
         transformStatementsBlock(atoms[getAtomIndex(m[6])]));
     }
 
