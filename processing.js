@@ -18321,6 +18321,7 @@
       this.container = container;
     }
     AstForInExpression.prototype.toString = function() {
+      // TODO not in bouncyballs example
       var init = this.initStatement.toString();
       if(init.indexOf("=") >= 0) { // can be without var declaration
         init = init.substring(0, init.indexOf("="));
@@ -18334,6 +18335,7 @@
     }
     AstForEachExpression.iteratorId = 0;
     AstForEachExpression.prototype.toString = function() {
+      // TODO not in bouncyballs example
       var init = this.initStatement.toString();
       var iterator = "$it" + (AstForEachExpression.iteratorId++);
       var variableName = init.replace(/^\s*var\s*/, "").split("=")[0];
@@ -18374,6 +18376,7 @@
       body.owner = this;
     }
     AstInnerInterface.prototype.toString = function() {
+      // TODO not used in bouncyballs example
       return "" + this.body;
     };
     function AstInnerClass(name, body, isStatic) {
@@ -18383,6 +18386,7 @@
       body.owner = this;
     }
     AstInnerClass.prototype.toString = function() {
+      // TODO not used in bouncyballs example
       return "" + this.body;
     };
 
@@ -18403,7 +18407,8 @@
       return innerClass;
     }
 
-    function AstClassMethod(name, params, body, isStatic) {
+    function AstClassMethod(returnType, name, params, body, isStatic) {
+      this.returnType = returnType;
       this.name = name;
       this.params = params;
       this.body = body;
@@ -18415,7 +18420,7 @@
       replaceContext = function (subject) {
         return paramNames.hasOwnProperty(subject.name) ? subject.name : oldContext(subject);
       };
-      var result = "function " + this.methodId + this.params + " " + this.body +"\n";
+      var result = this.returnType + " " + this.methodId + this.params + " " + this.body +"\n";
       replaceContext = oldContext;
       return result;
     };
@@ -18425,7 +18430,7 @@
       methodsRegex.lastIndex = 0;
       var isStatic = m[1].indexOf("static") >= 0;
       var body = m[6] !== ';' ? atoms[getAtomIndex(m[6])] : "{}";
-      return new AstClassMethod(m[3], transformParams(atoms[getAtomIndex(m[4])]),
+      return new AstClassMethod(m[2], m[3], transformParams(atoms[getAtomIndex(m[4])]),
         transformStatementsBlock(body), isStatic );
     }
 
