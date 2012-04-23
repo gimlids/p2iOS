@@ -18094,6 +18094,7 @@
       body.owner = this;
     }
     AstInlineClass.prototype.toString = function() {
+      // TODO not in bouncyballs example, so not implementing yet
       return "new (" + this.body + ")";
     };
 
@@ -18113,8 +18114,12 @@
       this.name = name;
       this.params = params;
       this.body = body;
+      //print("............ " + name);
+      //print("............ " + params);
+      //print("............ " + body);
     }
     AstFunction.prototype.toString = function() {
+      // TODO not used in bouncyballs example
       var oldContext = replaceContext;
       // saving "this." and parameters
       var names = appendToLookupTable({"this":null}, this.params.getNames());
@@ -18140,6 +18145,7 @@
       this.members = members;
     }
     AstInlineObject.prototype.toString = function() {
+      // TODO not used in bouncyballs example
       var oldContext = replaceContext;
       replaceContext = function (subject) {
           return subject.name === "this" ? "this" : oldContext(subject); // saving "this."
@@ -18279,7 +18285,7 @@
       return names;
     };
     AstVar.prototype.toString = function() {
-      return "var " + this.definitions.join(",");
+      return this.varType + " " + this.definitions.join(",");
     };
     function AstStatement(expression) {
       this.expression = expression;
