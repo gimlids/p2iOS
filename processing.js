@@ -18822,10 +18822,10 @@
       replaceContext = oldContext;
        
        // C++ class:
-       return "class " + className + " {\npublic:\n\n" + result + "}\n" +
-        "/* start static definitions (unimplemented) */" + staticDefinitions + "/* end static definitions */" +
-        "/* start metadata (unimplemented) */ " + metadata + " /* end metadata */" +
-        "};";
+       return "class " + className + " {\npublic:\n\n" + result + "\n" +
+        "/* start " + className + " static definitions (unimplemented) */" + staticDefinitions + "/* end static definitions */" +
+        "/* start " + className + " metadata (unimplemented) */ " + metadata + " /* end metadata */" +
+        "}";
 
        // JavaScript class:
        /*return "(function() {\n" +
@@ -18890,6 +18890,7 @@
       body.owner = this;
     }
     AstInterface.prototype.toString = function() {
+      return "#error AstInterface.toString() not implemented\n";
       return "var " + this.name + " = " + this.body + ";\n" +
         "$p." + this.name + " = " + this.name + ";\n";
     };
