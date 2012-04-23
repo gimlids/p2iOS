@@ -18822,10 +18822,10 @@
       replaceContext = oldContext;
        
        // C++ class:
-       return "--------------------class " + className + " {\npublic:\n\n" + result + "}\n" +
-        "/* start static definitions */" + staticDefinitions + "/* end static definitions */" +
-        "/* start metadata */ " + metadata + " /* end metadata */" +
-        "};---------------";
+       return "class " + className + " {\npublic:\n\n" + result + "}\n" +
+        "/* start static definitions (unimplemented) */" + staticDefinitions + "/* end static definitions */" +
+        "/* start metadata (unimplemented) */ " + metadata + " /* end metadata */" +
+        "};";
 
        // JavaScript class:
        /*return "(function() {\n" +
@@ -18899,8 +18899,9 @@
       body.owner = this;
     }
     AstClass.prototype.toString = function() {
-      return "var " + this.name + " = " + this.body + ";\n" +
-        "$p." + this.name + " = " + this.name + ";\n";
+      //return "var " + this.name + " = " + this.body + ";\n" +
+      //  "$p." + this.name + " = " + this.name + ";\n";
+      return this.body + ";\n";
     };
 
     function transformGlobalClass(class_) {
