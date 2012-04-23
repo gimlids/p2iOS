@@ -18796,7 +18796,7 @@
           result += "$p.addMethod(" + selfId + ", '" + method.name + "', " + methodId + ");\n";
         } else {
           result += method;
-          result += "$p.addMethod(" + selfId + ", '" + method.name + "', " + methodId + ");\n";
+          //result += "$p.addMethod(" + selfId + ", '" + method.name + "', " + methodId + ");\n";
         }
       }
       result += trim(this.misc.tail);
