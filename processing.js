@@ -18447,6 +18447,7 @@
       return names;
     };
     AstClassField.prototype.toString = function() {
+      // TODO not used in bouncyballs example
       var thisPrefix = replaceContext({ name: "[this]" });
       if(this.isStatic) {
         var className = this.owner.name;
@@ -18477,7 +18478,8 @@
       return new AstClassField(definitions, attrAndType[2], isStatic);
     }
 
-    function AstConstructor(params, body) {
+    function AstConstructor(className, params, body) {
+      this.className = className;
       this.params = params;
       this.body = body;
     }
@@ -18487,7 +18489,7 @@
       replaceContext = function (subject) {
         return paramNames.hasOwnProperty(subject.name) ? subject.name : oldContext(subject);
       };
-      var prefix = "function $constr_" + this.params.params.length + this.params.toString();
+      var prefix = this.className + this.params.toString();
       var body = this.body.toString();
       if(!/\$(superCstr|constr)\b/.test(body)) {
         body = "{\n$superCstr();\n" + body.substring(1);
@@ -18496,11 +18498,11 @@
       return prefix + body + "\n";
     };
 
-    function transformConstructor(cstr) {
+    function transformConstructor(className, cstr) {
       var m = new RegExp(/"B(\d+)"\s*"A(\d+)"/).exec(cstr);
       var params = transformParams(atoms[m[1]]);
 
-      return new AstConstructor(params, transformStatementsBlock(atoms[m[2]]));
+      return new AstConstructor(className, params, transformStatementsBlock(atoms[m[2]]));
     }
 
     function AstInterfaceBody(name, interfacesNames, methodsNames, fields, innerClasses, misc) {
@@ -18853,7 +18855,7 @@
       }
       var tail = fields.pop();
       for(i = 0; i < cstrs.length; ++i) {
-        cstrs[i] = transformConstructor(atoms[cstrs[i]]);
+        cstrs[i] = transformConstructor(name, atoms[cstrs[i]]);
       }
       for(i = 0; i < classes.length; ++i) {
         classes[i] = transformInnerClass(atoms[classes[i]]);
