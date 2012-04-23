@@ -18538,6 +18538,7 @@
       }
     };
     AstInterfaceBody.prototype.toString = function() {
+      // TODO not used in bouncyballs example
       function getScopeLevel(p) {
         var i = 0;
         while(p) {
@@ -18639,6 +18640,7 @@
       this.functions = functions;
       this.methods = methods;
       this.fields = fields;
+      this.originalFieldStrings = misc["originalFieldStrings"];
       this.cstrs = cstrs;
       this.innerClasses = innerClasses;
       this.misc = misc;
@@ -18680,7 +18682,8 @@
 
       var selfId = "$this_" + scopeLevel;
       var className = this.name;
-      var result = "var " + selfId + " = this;\n";
+      var result = "";
+      //var result = "var " + selfId + " = this;\n";
       var staticDefinitions = "";
       var metadata = "";
 
@@ -18709,13 +18712,14 @@
 
       var resolvedBaseClassName;
       if (this.baseClassName) {
+        // TODO not used in bouncyballs example
         resolvedBaseClassName = oldContext({name: this.baseClassName});
         result += "var $super = { $upcast: " + selfId + " };\n";
         result += "function $superCstr(){" + resolvedBaseClassName +
           ".apply($super,arguments);if(!('$self' in $super)) $p.extendClassChain($super)}\n";
         metadata += className + ".$base = " + resolvedBaseClassName + ";\n";
       } else {
-        result += "function $superCstr(){$p.extendClassChain("+ selfId +")}\n";
+        //result += "function $superCstr(){$p.extendClassChain("+ selfId +")}\n";
       }
 
       if (this.owner.base) {
@@ -18747,9 +18751,11 @@
       for (i = 0, l = this.innerClasses.length; i < l; ++i) {
         var innerClass = this.innerClasses[i];
         if (innerClass.isStatic) {
+          // TODO not used in bouncyballs example
           staticDefinitions += className + "." + innerClass.name + " = " + innerClass + ";\n";
           result += selfId + "." + innerClass.name + " = " + className + "." + innerClass.name + ";\n";
         } else {
+          // TODO not used in bouncyballs example
           result += selfId + "." + innerClass.name + " = " + innerClass + ";\n";
         }
       }
@@ -18759,15 +18765,18 @@
         if (field.isStatic) {
           staticDefinitions += className + "." + field.definitions.join(";\n" + className + ".") + ";\n";
           for (j = 0, m = field.definitions.length; j < m; ++j) {
+            // TODO not used in bouncyballs example
             var fieldName = field.definitions[j].name, staticName = className + "." + fieldName;
             result += "$p.defineProperty(" + selfId + ", '" + fieldName + "', {" +
               "get: function(){return " + staticName + "}, " +
               "set: function(val){" + staticName + " = val}});\n";
           }
         } else {
-          result += selfId + "." + field.definitions.join(";\n" + selfId + ".") + ";\n";
+          //result += selfId + "." + field.definitions.join(";\n" + selfId + ".") + ";\n";
         }
       }
+      result += this.originalFieldStrings.join(";\n") + ";\n";
+
       var methodOverloads = {};
       for (i = 0, l = this.methods.length; i < l; ++i) {
         var method = this.methods[i];
@@ -18811,12 +18820,20 @@
       result += "$constr.apply(null, arguments);\n";
 
       replaceContext = oldContext;
-      return "(function() {\n" +
+       
+       // C++ class:
+       return "--------------------class " + className + " {\npublic:\n\n" + result + "}\n" +
+        "/* start static definitions */" + staticDefinitions + "/* end static definitions */" +
+        "/* start metadata */ " + metadata + " /* end metadata */" +
+        "};---------------";
+
+       // JavaScript class:
+       /*return "(function() {\n" +
         "function " + className + "() {\n" + result + "}\n" +
         staticDefinitions +
         metadata +
         "return " + className + ";\n" +
-        "})()";
+        "})()";*/
     };
 
     transformClassBody = function(body, name, baseName, interfaces) {
@@ -18849,7 +18866,9 @@
       for(i = 0; i < methods.length; ++i) {
         methods[i] = transformClassMethod(atoms[methods[i]]);
       }
+      var sourceFieldStrings = [];
       for(i = 0; i < fields.length - 1; ++i) {
+        sourceFieldStrings.push(fields[i]);
         var field = trimSpaces(fields[i]);
         fields[i] = transformClassField(field.middle);
       }
@@ -18862,7 +18881,7 @@
       }
 
       return new AstClassBody(name, baseClassName, interfacesNames, functions, methods, fields, cstrs,
-        classes, { tail: tail });
+        classes, { tail: tail, originalFieldStrings: sourceFieldStrings });
     };
 
     function AstInterface(name, body) {
