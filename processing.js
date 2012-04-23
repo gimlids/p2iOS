@@ -17911,11 +17911,12 @@
     }
 
     // AstParam contains the name of a parameter inside a function declaration
-    function AstParam(name) {
+    function AstParam(type, name) {
+      this.type = type;
       this.name = name;
     }
     AstParam.prototype.toString = function() {
-      return this.name;
+      return this.type + " " + this.name;
     };
     // AstParams contains an array of AstParam objects
     function AstParams(params) {
@@ -17945,8 +17946,14 @@
       if(paramsWoPars !== "") {
         var paramList = paramsWoPars.split(",");
         for(var i=0; i < paramList.length; ++i) {
+          pieces = paramList[i].split(" ");
+          tokens = [];
+          for(index in pieces) {
+            if(pieces[index] != "")
+               tokens.push(pieces[index]);
+          }
           var param = /\b([A-Za-z_$][\w$]*\b)(\s*"[ABC][\d]*")*\s*$/.exec(paramList[i]);
-          result.push(new AstParam(param[1]));
+          result.push(new AstParam(tokens[0], param[1]));
         }
       }
       return new AstParams(result);
