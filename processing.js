@@ -18482,9 +18482,9 @@
       for(var i=0; i < definitions.length; ++i) {
         definitions[i] = transformVarDefinition(definitions[i], defaultTypeValue);
       }
-      var fieldType = attrAndType[2];
-      cppField = transformType(cppField);
-      return new AstClassField(definitions, fieldType, isStatic, cppField);
+      var fieldType = transformType(attrAndType[2]);
+      /*cppField = transformType(cppField);*/
+      return new AstClassField(definitions, fieldType, isStatic/*, cppField*/);
     }
 
     function transformType(type_in) {
@@ -18787,8 +18787,10 @@
               "set: function(val){" + staticName + " = val}});\n";
           }
         } else {
+          var cppFieldNames = field.definitions.map(function(definition) { return definition.name; });
+          result += field.fieldType + " " + cppFieldNames.join(", ") + ";\n";
           //result += selfId + "." + field.definitions.join(";\n" + selfId + ".") + ";\n";
-          result += field.cppField + ";\n";
+          //result += field.cppField + ";\n";
         }
       }
       result += "\n";
