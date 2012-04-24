@@ -18496,7 +18496,8 @@
       var prefix = this.className + this.params.toString();
       var body = this.body.toString();
       if(!/\$(superCstr|constr)\b/.test(body)) {
-        body = "{\n$superCstr();\n" + body.substring(1);
+        //body = "{\n$superCstr();\n" + body.substring(1);
+        body = "\n /*: superConstructor() p2ios: call not implemented */\n{\n" + body.substring(1);
       }
       replaceContext = oldContext;
       return prefix + body + "\n";
