@@ -17953,9 +17953,13 @@
                tokens.push(pieces[index]);
           }
           var param = /\b([A-Za-z_$][\w$]*\b)(\s*"[ABC][\d]*")*\s*$/.exec(paramList[i]);
-          result.push(new AstParam(tokens[0], param[1]));
+          print("param: " + param);
+          print("tokens: " + tokens);
+          var type = transformType(tokens[0]);
+          result.push(new AstParam(type, param[1]));
         }
       }
+      print(result);
       return new AstParams(result);
     }
 
@@ -18478,8 +18482,13 @@
         definitions[i] = transformVarDefinition(definitions[i], defaultTypeValue);
       }
       var fieldType = attrAndType[2];
-      cppField = cppField.replace(/"C\d+"/, "[]");
+      cppField = transformType(cppField);
       return new AstClassField(definitions, fieldType, isStatic, cppField);
+    }
+
+    function transformType(type_in) {
+      var type = type_in.replace(/"C\d+"/, "[]");
+      return type;
     }
 
     function AstConstructor(className, params, body) {
@@ -18506,7 +18515,7 @@
     function transformConstructor(className, cstr) {
       var m = new RegExp(/"B(\d+)"\s*"A(\d+)"/).exec(cstr);
       var params = transformParams(atoms[m[1]]);
-
+      
       return new AstConstructor(className, params, transformStatementsBlock(atoms[m[2]]));
     }
 
