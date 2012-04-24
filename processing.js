@@ -17953,13 +17953,10 @@
                tokens.push(pieces[index]);
           }
           var param = /\b([A-Za-z_$][\w$]*\b)(\s*"[ABC][\d]*")*\s*$/.exec(paramList[i]);
-          print("param: " + param);
-          print("tokens: " + tokens);
           var type = transformType(tokens[0]);
           result.push(new AstParam(type, param[1]));
         }
       }
-      print(result);
       return new AstParams(result);
     }
 
@@ -17985,6 +17982,7 @@
         var createArrayArgs = "('" + type + "', " + addAtom(arrayInitializer, 'A') + ")";
         return '$p.createJavaArray' + addAtom(createArrayArgs, 'B');
       });
+
       // .length() --> .length
       s = s.replace(/(\.\s*length)\s*"B\d+"/g, "$1");
       // #000000 --> 0x000000
@@ -18289,7 +18287,7 @@
       return names;
     };
     AstVar.prototype.toString = function() {
-      return this.varType + " " + this.definitions.join(",");
+      return this.varType + this.definitions.join(",");
     };
     function AstStatement(expression) {
       this.expression = expression;
@@ -18306,7 +18304,9 @@
         for(var i=0; i < definitions.length; ++i) {
           definitions[i] = transformVarDefinition(definitions[i], defaultTypeValue);
         }
-        return new AstVar(definitions, attrAndType[2]);
+        var type = transformType(attrAndType[2]);
+        //return new AstVar(definitions, attrAndType[2]);
+        return new AstVar(definitions, type);
       }
       return new AstStatement(transformExpression(statement));
     }
