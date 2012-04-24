@@ -18798,13 +18798,14 @@
       for (i = 0, l = this.methods.length; i < l; ++i) {
         var method = this.methods[i];
         var overload = methodOverloads[method.name];
-        var methodId = method.name + "$" + method.params.params.length;
-        if (overload) {
+        //var methodId = method.name + "$" + method.params.params.length;
+        var methodId = method.name;
+        /*if (overload) {
           ++overload;
           methodId += "_" + overload;
         } else {
           overload = 1;
-        }
+        }*/
         method.methodId = methodId;
         methodOverloads[method.name] = overload;
         if (method.isStatic) {
