@@ -19127,7 +19127,8 @@
         if(globalMembers.hasOwnProperty(name) ||
            PConstants.hasOwnProperty(name) ||
            defaultScope.hasOwnProperty(name)) {
-          return "$p." + name;
+          //return "$p." + name;
+          return "processing::" + name;
         }
         return name;
       };
