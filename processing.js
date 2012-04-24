@@ -18683,7 +18683,8 @@
 
       var scopeLevel = getScopeLevel(this.owner);
 
-      var selfId = "$this_" + scopeLevel;
+      //var selfId = "$this_" + scopeLevel;
+      var selfId = "(*this)";
       var className = this.name;
       var result = "";
       //var result = "var " + selfId + " = this;\n";
