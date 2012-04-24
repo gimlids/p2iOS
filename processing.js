@@ -18434,7 +18434,8 @@
         transformStatementsBlock(body), isStatic );
     }
 
-    function AstClassField(definitions, fieldType, isStatic) {
+    function AstClassField(definitions, fieldType, isStatic, cppField) {
+      this.cppField = cppField;
       this.definitions = definitions;
       this.fieldType = fieldType;
       this.isStatic = isStatic;
@@ -18468,6 +18469,7 @@
     };
 
     function transformClassField(statement) {
+      var cppField = statement;
       var attrAndType = attrAndTypeRegex.exec(statement);
       var isStatic = attrAndType[1].indexOf("static") >= 0;
       var definitions = statement.substring(attrAndType[0].length).split(/,\s*/g);
@@ -18475,7 +18477,9 @@
       for(var i=0; i < definitions.length; ++i) {
         definitions[i] = transformVarDefinition(definitions[i], defaultTypeValue);
       }
-      return new AstClassField(definitions, attrAndType[2], isStatic);
+      var fieldType = attrAndType[2];
+      cppField = cppField.replace(/"C\d+"/, "[]");
+      return new AstClassField(definitions, fieldType, isStatic, cppField);
     }
 
     function AstConstructor(className, params, body) {
@@ -18640,7 +18644,6 @@
       this.functions = functions;
       this.methods = methods;
       this.fields = fields;
-      this.originalFieldStrings = misc["originalFieldStrings"];
       this.cstrs = cstrs;
       this.innerClasses = innerClasses;
       this.misc = misc;
@@ -18773,9 +18776,11 @@
           }
         } else {
           //result += selfId + "." + field.definitions.join(";\n" + selfId + ".") + ";\n";
+          result += field.cppField + ";\n";
         }
       }
-      result += this.originalFieldStrings.join(";\n") + ";\n";
+      result += "\n";
+//      result += this.cppFields.join(";\n") + ";\n";
 
       var methodOverloads = {};
       for (i = 0, l = this.methods.length; i < l; ++i) {
@@ -18866,9 +18871,7 @@
       for(i = 0; i < methods.length; ++i) {
         methods[i] = transformClassMethod(atoms[methods[i]]);
       }
-      var sourceFieldStrings = [];
       for(i = 0; i < fields.length - 1; ++i) {
-        sourceFieldStrings.push(fields[i]);
         var field = trimSpaces(fields[i]);
         fields[i] = transformClassField(field.middle);
       }
@@ -18881,7 +18884,7 @@
       }
 
       return new AstClassBody(name, baseClassName, interfacesNames, functions, methods, fields, cstrs,
-        classes, { tail: tail, originalFieldStrings: sourceFieldStrings });
+        classes, { tail: tail });
     };
 
     function AstInterface(name, body) {
