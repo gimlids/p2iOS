@@ -18288,7 +18288,7 @@
       return names;
     };
     AstVar.prototype.toString = function() {
-      return this.varType + this.definitions.join(",");
+      return this.varType + " " + this.definitions.join(",");
     };
     function AstStatement(expression) {
       this.expression = expression;
