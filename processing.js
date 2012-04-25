@@ -18832,6 +18832,7 @@
       }
       result += trim(this.misc.tail);
 
+      result += this.name + "() { };"; // TODO maybe not a good idea...
       if (this.cstrs.length > 0) {
         result += this.cstrs.join('\n') + '\n';
       }

@@ -40,7 +40,7 @@ namespace p2iOS
    private:
       // TODO put this stuff in a higher level automatic reference counting class
       std::vector<T> *shared_vector;
-      unsigned int *shared_reference_count;
+      size_t *shared_reference_count;
    };
 
 
