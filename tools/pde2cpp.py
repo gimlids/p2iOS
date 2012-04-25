@@ -13,7 +13,8 @@ class Converter(object):
            '-f', os.path.join(self.toolsdir, 'fake-dom.js'),
            '-f', os.path.join(self.toolsdir, '..', 'processing.js'),
            '-f', os.path.join(self.toolsdir, 'jsbeautify.js'),
-           '-e', 'var pcode = snarf("%s"); print(Processing.compile(pcode, "cpp").sourceCode);\n'  % os.path.relpath(filename)]
+           '-e', 'var pcode = snarf("%s"); print(Processing.compile(pcode, "%s").sourceCode);\n'  % (os.path.relpath(filename), os.path.basename(filename))
+    ]
 
     proc = Popen(cmd)
 
