@@ -17980,10 +17980,12 @@
       s = s.replace(/\bnew\s+([A-Za-z_$][\w$]*\b(?:\s*\.\s*[A-Za-z_$][\w$]*\b)*)\s*("C\d+"(?:\s*"C\d+")*)/g, function(all, type, index) {
         var args = index.replace(/"C(\d+)"/g, function(all, j) { return atoms[j]; })
           .replace(/\[\s*\]/g, "[null]").replace(/\s*\]\s*\[\s*/g, ", ");
-        var arrayInitializer = "{" + args.substring(1, args.length - 1) + "}";
-        var createArrayArgs = "('" + type + "', " + addAtom(arrayInitializer, 'A') + ")";
+        //var arrayInitializer = "{" + args.substring(1, args.length - 1) + "}";
+        var arrayInitializer = args.substring(1, args.length - 1);
+        //var createArrayArgs = "('" + type + "', " + addAtom(arrayInitializer, 'A') + ")";
+        var createArrayArgs = "<" + type + ">(" + addAtom(arrayInitializer, 'A') + ")";
         //return '$p.createJavaArray' + addAtom(createArrayArgs, 'B');
-        return 'createJavaArray' + addAtom(createArrayArgs, 'B');
+        return 'new p2iOS::JavaArray' + addAtom(createArrayArgs, 'B');
       });
 
       // .length() --> .length
