@@ -3,6 +3,11 @@
 
 namespace p2iOS
 {
+   class p2iOSApp
+   {
+      
+   };
+
    template <class T>
    class JavaArray
    {
