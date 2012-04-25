@@ -17985,7 +17985,7 @@
         //var createArrayArgs = "('" + type + "', " + addAtom(arrayInitializer, 'A') + ")";
         var createArrayArgs = "<" + type + ">(" + addAtom(arrayInitializer, 'A') + ")";
         //return '$p.createJavaArray' + addAtom(createArrayArgs, 'B');
-        return 'new p2iOS::JavaArray' + addAtom(createArrayArgs, 'B');
+        return 'p2iOS::JavaArray' + addAtom(createArrayArgs, 'B');
       });
 
       // .length() --> .length
