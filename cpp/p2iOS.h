@@ -3,6 +3,17 @@
 
 #include <vector>
 #include <math.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <iostream>
+
+#include <boost/shared_ptr.hpp>
+
+#define P2IOS_MAIN \
+int main(int argc, char** argv) { \
+   printf("p2iOS says hello world!\n"); \
+   return 0; \
+}
 
 namespace p2iOS
 {
@@ -16,7 +27,7 @@ namespace p2iOS
    public:
 
       JavaArray(const size_t & size = 0) {
-         shared_vector = new std::vector<T>(size);
+         shared_vector = new std::vector< boost::shared_ptr< T > >(size);
          shared_reference_count = new size_t(1);
       };
 
@@ -34,12 +45,12 @@ namespace p2iOS
 
 
       T & operator[](const size_t & index) {
-         return (*shared_vector)[index];
+         return * (*shared_vector)[index];
       };
 
    private:
       // TODO put this stuff in a higher level automatic reference counting class
-      std::vector<T> *shared_vector;
+      std::vector< boost::shared_ptr< T > > *shared_vector;
       size_t *shared_reference_count;
    };
 
