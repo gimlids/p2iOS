@@ -18207,6 +18207,8 @@
             return all;
           }
           var subject = { name: identifier, member: subMember, callSign: !!callSign };
+          if(subject.name == "new")
+             subject.name = ""; // may not be best place for this. may be really ugly hack.
           return replaceContext(subject) + (suffix === undef ? "" : suffix);
         });
     }
