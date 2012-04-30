@@ -9,9 +9,15 @@
 
 #include <boost/shared_ptr.hpp>
 
+#include <ofMain.h>
+#include "ofxiPhone.h"
+#include "ofxiPhoneExtras.h"
+
 #define P2IOS_MAIN \
 int main(int argc, char** argv) { \
    printf("p2iOS says hello world!\n"); \
+   ofSetupOpenGL(1024,768, OF_FULLSCREEN); \
+   ofRunApp(new p2iOS::p2iOSApp()); \
    return 0; \
 }
 
@@ -158,7 +164,38 @@ namespace p2iOS
    }
 
 
-
+   class p2iOSApp : public ofxiPhoneApp {
+   public:
+       void setup(){	
+           // register touch events
+           ofRegisterTouchEvents(this);
+           
+           // initialize the accelerometer
+           ofxAccelerometer.setup();
+           
+           //iPhoneAlerts will be sent to this.
+           ofxiPhoneAlerts.addListener(this);
+           
+           //If you want a landscape oreintation 
+           //iPhoneSetOrientation(OFXIPHONE_ORIENTATION_LANDSCAPE_RIGHT);
+           
+           ofBackground(127,127,127);
+       };
+       void update() { };
+       void draw() { };
+       void exit() { };
+      
+      void touchDown(ofTouchEventArgs &touch) { };
+      void touchMoved(ofTouchEventArgs &touch) { };
+      void touchUp(ofTouchEventArgs &touch) { };
+      void touchDoubleTap(ofTouchEventArgs &touch) { };
+      void touchCancelled(ofTouchEventArgs &touch) { };
+      
+      void lostFocus() { };
+      void gotFocus() { };
+      void gotMemoryWarning() { };
+      void deviceOrientationChanged(int newOrientation) { };
+    };
 }
 
 #endif

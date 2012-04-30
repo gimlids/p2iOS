@@ -1,7 +1,7 @@
 
-Processing.js - @VERSION@
+p2iOS - @VERSION@
 =========================
-a port of the Processing visualization language
+a Processing.org to iOS converter, with openFrameworks inside (dun DUN dun DUN!)
 
 About Us
 --------
