@@ -19188,7 +19188,7 @@
         //otherStatements.join('') + "\n})";
         otherStatements.join('')/* + "\n};"*/; // TODO remove stray per-variable semicolon ... 
       replaceContext = null;
-      return result;
+      return result + "\n\nP2IOS_MAIN";
     };
 
     transformMain = function() {
