@@ -7,7 +7,7 @@ based on processing.js originally by John Resig.
 About p2iOS
 --------
 * License:           MIT (see included LICENSE file for full license)
-* Github Repo:       https://github.com/gimlids/processing-js/tree/develop-processingcc
+* Github Repo:       https://github.com/gimlids/p2iOS/tree/develop-processingcc
 
 Usage
 -----
