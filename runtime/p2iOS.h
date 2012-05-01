@@ -59,8 +59,7 @@ namespace p2iOS
       std::vector< boost::shared_ptr< T > > *shared_vector;
       size_t *shared_reference_count;
    };
-
-
+    
    //==========================================
    // initialization functions
    //==========================================
@@ -70,7 +69,7 @@ namespace p2iOS
    */
    void size(int width, int height)
    {
-#warning processing code uses size(width, height) but this is not yet implemented in p2iOS
+       ofSetWindowShape(width, height);
    };
 
    //===========================================
@@ -99,7 +98,7 @@ namespace p2iOS
 
    float random(float low, float high)
    {
-#warning processing code uses random() but this is not yet implemented in p2iOS
+       return low + (high - low) * (float)rand()/(float)RAND_MAX;
    };
 
    float random(float high)
@@ -122,7 +121,10 @@ namespace p2iOS
    */
    void fill(unsigned char gray, unsigned char alpha)
    {
-#warning processing code uses fill(gray, alpha) but this is not yet implemented in p2iOS
+       ofStyle currentStyle = ofGetStyle();
+       currentStyle.bFill = true;
+       currentStyle.bgColor.setHsb(0, 0, float(gray) / 255.0, float(alpha) / 255.0);
+       ofSetStyle(currentStyle);
    };
 
    /* TODO http://processing.org/reference/background_.html
@@ -136,7 +138,7 @@ namespace p2iOS
    */
    void background(unsigned char gray)
    {
-#warning processing code uses background(gray) but this is not yet implemented in p2iOS
+       ofBackground(gray);
    };
 
    //=========================================
@@ -145,6 +147,7 @@ namespace p2iOS
 
    void noStroke()
    {
+       
 #warning processing code uses noStroke() but this is not yet implemented in p2iOS
    };
 
@@ -160,8 +163,8 @@ namespace p2iOS
 
    void ellipse(float x, float y, float width, float height)
    {
-#warning processing code uses ellipse(x, y, width, height) but this is not yet implemented in p2iOS
-   }
+       ofEllipse(x, y, width, height);
+   };
 
 
    class p2iOSApp : public ofxiPhoneApp {
@@ -180,9 +183,13 @@ namespace p2iOS
            //iPhoneSetOrientation(OFXIPHONE_ORIENTATION_LANDSCAPE_RIGHT);
            
            ofBackground(127,127,127);
+           
+           srand((unsigned)time(0));
        };
        void update() { };
-       void draw() { };
+       void draw() {
+          
+       };
        void exit() { };
       
       void touchDown(ofTouchEventArgs &touch) { };
