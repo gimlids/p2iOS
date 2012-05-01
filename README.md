@@ -1,5 +1,5 @@
 
-p2iOS - @VERSION@
+p2iOS
 =========================
 a Processing.org to iOS converter, with openFrameworks inside (dun DUN dun DUN!)
 based on processing.js originally by John Resig.
