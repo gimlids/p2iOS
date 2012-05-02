@@ -46,17 +46,24 @@ namespace p2iOS
 
       // does the default operator= call this?
       JavaArray(const JavaArray & other) {
-          length = other.length;
-         shared_vector = other.shared_vector;
-          shared_reference_count = other.shared_reference_count;
-         (*shared_reference_count)++;
-          NSLog(@"copied JavaArray of size %zu, reference count is %zu", length, *shared_reference_count);
-      };
+          copy(other);
+      }
+       
+
+       
+       // http://stackoverflow.com/questions/2639017/calling-assignment-operator-in-copy-constructor
+       JavaArray<T> & operator=(const JavaArray<T> & rhs)
+       {
+           copy(rhs);
+           return *this;
+       };
 
       ~JavaArray() {
+          NSLog(@"decrementing reference_count from %zu", *shared_reference_count);
          (*shared_reference_count)--;
          if(*shared_reference_count == 0)
          {
+             NSLog(@"   deleting a shared_vector with size %zu", shared_vector->size());
              delete(shared_reference_count);
             delete(shared_vector);
          }
@@ -68,12 +75,20 @@ namespace p2iOS
           NSLog(@"enter operator[], index = %zu, vector size = %zu", index, shared_vector->size());
           std::tr1::shared_ptr<T> item_ptr = (*shared_vector)[index];
           if (item_ptr.get() == NULL) {
-              item_ptr = std::tr1::shared_ptr<T>(new T());
+              (*shared_vector)[index] = std::tr1::shared_ptr<T>(new T());
           }
          return * (*shared_vector)[index];
       };
 
    private:
+       void copy(const JavaArray<T> & other) {
+           length = other.length;
+           shared_vector = other.shared_vector;
+           shared_reference_count = other.shared_reference_count;
+           (*shared_reference_count)++;
+           NSLog(@"copied JavaArray of size %zu, reference count is %zu", length, *shared_reference_count);
+       };
+       
       // TODO put this stuff in a higher level automatic reference counting class
        std::vector< std::tr1::shared_ptr< T > > *shared_vector;
       size_t *shared_reference_count;
