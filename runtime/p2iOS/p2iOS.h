@@ -3,11 +3,8 @@
 
 #include <vector>
 #include <math.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <iostream>
 
-#include <boost/shared_ptr.hpp>
+#include <tr1/memory>
 
 #include <ofMain.h>
 #include "ofxiPhone.h"
