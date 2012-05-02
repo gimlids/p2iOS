@@ -119,17 +119,17 @@ namespace p2iOS
 
    float atan2(float y, float x)
    {
-      return atan2(y, x);
+       return atan2f(y, x);
    };
 
    float cos(float angle)
    {
-      return cos(angle);
+      return cosf(angle);
    };
 
    float sin(float angle)
    {
-      return sin(angle);
+      return sinf(angle);
    };
 
    float random(float low, float high)
