@@ -146,22 +146,7 @@ namespace p2iOS
    // functions that take colors
    // =======================================
 
-   /* TODO http://processing.org/reference/fill_.html
-   fill(gray)
-   fill(value1, value2, value3)
-   fill(value1, value2, value3, alpha)
-   fill(color)
-   fill(color, alpha)
-   fill(hex)
-   fill(hex, alpha)
-   */
-   void fill(unsigned char gray, unsigned char alpha)
-   {
-       ofStyle currentStyle = ofGetStyle();
-       currentStyle.bFill = true;
-       currentStyle.bgColor.setHsb(0, 0, float(gray) / 255.0, float(alpha) / 255.0);
-       ofSetStyle(currentStyle);
-   };
+
 
    /* TODO http://processing.org/reference/background_.html
    background(gray, alpha)
@@ -172,36 +157,69 @@ namespace p2iOS
    background(hex)
    background(hex, alpha)
    */
-   void background(unsigned char gray)
-   {
-       ofBackground(gray);
-   };
+
 
    //=========================================
    // drawing state functions
    //=========================================
 
+    void background(unsigned char gray)
+    {
+        ofBackground(gray);
+    };
+
+    void frameRate(int fps)
+    {
+        ofSetFrameRate(fps);
+    }
+    
+    /* TODO http://processing.org/reference/fill_.html
+     fill(gray)
+     fill(value1, value2, value3)
+     fill(value1, value2, value3, alpha)
+     fill(color)
+     fill(color, alpha)
+     fill(hex)
+     fill(hex, alpha)
+     */
+    void fill(unsigned char gray, unsigned char alpha)
+    {
+        ofStyle currentStyle = ofGetStyle();
+        currentStyle.bFill = true;
+        currentStyle.bgColor.setHsb(0, 0, float(gray) / 255.0, float(alpha) / 255.0);
+        ofSetStyle(currentStyle);
+    };
+    
+    void stroke(int gray)
+    {
+        ofSetColor(gray);
+    };
+    
    void noStroke()
    {
        
-#warning processing code uses noStroke() but this is not yet implemented in p2iOS
+// TODO implement noStroke()
    };
 
    // TODO http://processing.org/reference/smooth_.html
    void smooth()
    {
-#warning processing code uses smooth() but this is not yet implemented in p2iOS
+// TODO implement smooth()
    };
 
    //==========================================
    // drawing functions
    //==========================================
 
+   void line(float x1, float y1, float x2, float y2)
+    {
+        ofLine(x1, y1, x2, y2);
+    }
+    
    void ellipse(float x, float y, float width, float height)
    {
        ofEllipse(x, y, width, height);
    };
-
 
    class p2iOSApp : public ofxiPhoneApp {
    public:
