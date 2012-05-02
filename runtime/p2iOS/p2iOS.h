@@ -19,6 +19,7 @@ int main(int argc, char** argv) { \
 }
 
 namespace p2iOS_user {
+    void p2iOS_init();
     void setup();
     void draw();
 }
@@ -33,26 +34,42 @@ namespace p2iOS
    class JavaArray
    {
    public:
-
+       size_t length;
+       
       JavaArray(const size_t & size = 0) {
+          NSLog(@"creating JavaArray with size %zu", size);
           shared_vector = new std::vector< std::tr1::shared_ptr< T > >(size);
-         shared_reference_count = new size_t(1);
+          length = size;
+         shared_reference_count = new size_t();
+          *shared_reference_count = 1;
       };
 
       // does the default operator= call this?
       JavaArray(const JavaArray & other) {
+          length = other.length;
          shared_vector = other.shared_vector;
+          shared_reference_count = other.shared_reference_count;
          (*shared_reference_count)++;
+          NSLog(@"copied JavaArray of size %zu, reference count is %zu", length, *shared_reference_count);
       };
 
       ~JavaArray() {
          (*shared_reference_count)--;
          if(*shared_reference_count == 0)
+         {
+             delete(shared_reference_count);
             delete(shared_vector);
+         }
+          // FIXME need to implement this for better karma ...
       };
 
 
       T & operator[](const size_t & index) {
+          NSLog(@"enter operator[], index = %zu, vector size = %zu", index, shared_vector->size());
+          std::tr1::shared_ptr<T> item_ptr = (*shared_vector)[index];
+          if (item_ptr.get() == NULL) {
+              item_ptr = std::tr1::shared_ptr<T>(new T());
+          }
          return * (*shared_vector)[index];
       };
 
@@ -69,9 +86,11 @@ namespace p2iOS
    /* TODO: http://processing.org/reference/size_.html
    size(width, height, MODE)
    */
-   void size(int width, int height)
+   void size(int _width, int _height)
    {
-       ofSetWindowShape(width, height);
+       ofSetWindowShape(_width, _height);
+       width = _width;
+       height = _height;
    };
 
    //===========================================
@@ -184,9 +203,11 @@ namespace p2iOS
            //If you want a landscape oreintation 
            //iPhoneSetOrientation(OFXIPHONE_ORIENTATION_LANDSCAPE_RIGHT);
            
-           ofBackground(127,127,127);
+           //ofBackground(127,127,127);
            
            srand((unsigned)time(0));
+           
+           p2iOS_user::p2iOS_init();
            
            // call the processing setup()
            p2iOS_user::setup();
