@@ -18,6 +18,11 @@ int main(int argc, char** argv) { \
    return 0; \
 }
 
+namespace p2iOS_user {
+    void setup();
+    void draw();
+}
+
 namespace p2iOS
 {
 
@@ -30,7 +35,7 @@ namespace p2iOS
    public:
 
       JavaArray(const size_t & size = 0) {
-         shared_vector = new std::vector< boost::shared_ptr< T > >(size);
+          shared_vector = new std::vector< std::tr1::shared_ptr< T > >(size);
          shared_reference_count = new size_t(1);
       };
 
@@ -53,7 +58,7 @@ namespace p2iOS
 
    private:
       // TODO put this stuff in a higher level automatic reference counting class
-      std::vector< boost::shared_ptr< T > > *shared_vector;
+       std::vector< std::tr1::shared_ptr< T > > *shared_vector;
       size_t *shared_reference_count;
    };
     
@@ -182,10 +187,15 @@ namespace p2iOS
            ofBackground(127,127,127);
            
            srand((unsigned)time(0));
+           
+           // call the processing setup()
+           p2iOS_user::setup();
+           
        };
        void update() { };
        void draw() {
-          
+          // call the processing draw()
+           p2iOS_user::draw();
        };
        void exit() { };
       
