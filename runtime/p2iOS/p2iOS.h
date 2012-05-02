@@ -37,7 +37,7 @@ namespace p2iOS
        size_t length;
        
       JavaArray(const size_t & size = 0) {
-          NSLog(@"creating JavaArray with size %zu", size);
+          //NSLog(@"creating JavaArray with size %zu", size);
           shared_vector = new std::vector< std::tr1::shared_ptr< T > >(size);
           length = size;
          shared_reference_count = new size_t();
@@ -59,11 +59,11 @@ namespace p2iOS
        };
 
       ~JavaArray() {
-          NSLog(@"decrementing reference_count from %zu", *shared_reference_count);
+          //NSLog(@"decrementing reference_count from %zu", *shared_reference_count);
          (*shared_reference_count)--;
          if(*shared_reference_count == 0)
          {
-             NSLog(@"   deleting a shared_vector with size %zu", shared_vector->size());
+             //NSLog(@"   deleting a shared_vector with size %zu", shared_vector->size());
              delete(shared_reference_count);
             delete(shared_vector);
          }
@@ -72,7 +72,7 @@ namespace p2iOS
 
 
       T & operator[](const size_t & index) {
-          NSLog(@"enter operator[], index = %zu, vector size = %zu", index, shared_vector->size());
+          //NSLog(@"enter operator[], index = %zu, vector size = %zu", index, shared_vector->size());
           std::tr1::shared_ptr<T> item_ptr = (*shared_vector)[index];
           if (item_ptr.get() == NULL) {
               (*shared_vector)[index] = std::tr1::shared_ptr<T>(new T());
@@ -86,7 +86,7 @@ namespace p2iOS
            shared_vector = other.shared_vector;
            shared_reference_count = other.shared_reference_count;
            (*shared_reference_count)++;
-           NSLog(@"copied JavaArray of size %zu, reference count is %zu", length, *shared_reference_count);
+           //NSLog(@"copied JavaArray of size %zu, reference count is %zu", length, *shared_reference_count);
        };
        
       // TODO put this stuff in a higher level automatic reference counting class
@@ -231,6 +231,7 @@ namespace p2iOS
        void update() { };
        void draw() {
           // call the processing draw()
+           //NSLog(@"enter p2iOS::draw()");
            p2iOS_user::draw();
        };
        void exit() { };
