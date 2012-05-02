@@ -14,7 +14,7 @@ Usage
 
 Get the code:
 
-    git clone git://github.com/gimlids/processing-js.git
+    git clone git://github.com/gimlids/p2iOS.git
     git checkout develop-processingcc
 
 Install Mozilla SpiderMonkey JSShell for command-line JavaScript using brew OS X package manager:
