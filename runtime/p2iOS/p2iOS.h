@@ -18,6 +18,8 @@ int main(int argc, char** argv) { \
    return 0; \
 }
 
+#undef TWO_PI
+
 namespace p2iOS_user {
     void p2iOS_init();
     void setup();
@@ -26,10 +28,18 @@ namespace p2iOS_user {
 
 namespace p2iOS
 {
-
+    
+    // constants
+    float TWO_PI = 6.28318530717958647693;
+    
+    // drawing state
    int width;
    int height;
 
+    // event state
+    int mouseX;
+    int mouseY;
+    
    template <class T>
    class JavaArray
    {
@@ -142,6 +152,16 @@ namespace p2iOS
       return random(0, high);
    };
 
+    float radians(float degrees)
+    {
+        return degrees * TWO_PI / 360.0;
+    }
+    
+    float dist(float x1, float y1, float x2, float y2)
+    {
+        return sqrtf((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
+    }
+    
    // =======================================
    // functions that take colors
    // =======================================
@@ -246,7 +266,7 @@ namespace p2iOS
            p2iOS_user::setup();
            
        };
-       void update() { };
+       void update() {       };
        void draw() {
           // call the processing draw()
            //NSLog(@"enter p2iOS::draw()");
@@ -254,9 +274,18 @@ namespace p2iOS
        };
        void exit() { };
       
-      void touchDown(ofTouchEventArgs &touch) { };
-      void touchMoved(ofTouchEventArgs &touch) { };
-      void touchUp(ofTouchEventArgs &touch) { };
+      void touchDown(ofTouchEventArgs &touch) { 
+          p2iOS::mouseX = touch.x; // does processing have a touch API?
+          p2iOS::mouseY = touch.y;
+      };
+       void touchMoved(ofTouchEventArgs &touch) {  
+           p2iOS::mouseX = touch.x; // does processing have a touch API?
+           p2iOS::mouseY = touch.y;
+       };
+       void touchUp(ofTouchEventArgs &touch) {  
+           p2iOS::mouseX = touch.x; // does processing have a touch API?
+           p2iOS::mouseY = touch.y;
+       };
       void touchDoubleTap(ofTouchEventArgs &touch) { };
       void touchCancelled(ofTouchEventArgs &touch) { };
       
