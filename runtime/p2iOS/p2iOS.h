@@ -43,6 +43,7 @@ namespace p2iOS
     // modes
     bool noLoopWasCalled = false;
     bool userWantsDrawLoop = true;
+    bool ranUserSetup = false;
     
    template <class T>
    class JavaArray
@@ -187,13 +188,19 @@ namespace p2iOS
            srand((unsigned)time(0));
            
            p2iOS_user::p2iOS_init();
-           
-           // call the processing setup()
-           p2iOS_user::setup();
-           
+                      
        };
        void update() {       };
        void draw() {
+           
+           // run user setup in draw because often processing sketches draw in setup() and have no draw()
+           if(!ranUserSetup)
+           {
+               p2iOS_user::setup();
+               ranUserSetup = true;
+               // FIXME let user do only one draw loop and keep showing the result
+           }
+           
            if(userWantsDrawLoop)
            {
                p2iOS_user::draw();
