@@ -19136,13 +19136,16 @@
       this.statements = statements;
     }
     AstRoot.prototype.toString = function() {
-      var variables = [], classes = [], otherStatements = [], statement;
+      var variables = [], classes = [], otherStatements = [], methods = [], statement;
       for (var i = 0, len = this.statements.length; i < len; ++i) {
         statement = this.statements[i];
         if (statement instanceof AstClass || statement instanceof AstInterface) {
           classes.push(statement);
         } else if(statement instanceof AstVar) {
           variables.push(statement);
+        } else if(statement instanceof AstMethod) {
+          methods.push(statement);
+          otherStatements.push(statement);
         } else {
           otherStatements.push(statement);
         }
@@ -19169,6 +19172,9 @@
           return definition.name;
         }).join(", ");
       });
+      var methodDeclarations = methods.map(function(astMethod) {
+        return astMethod.returnType + " " + astMethod.name + astMethod.params.toString();
+      });
       var variableDefinitions = variables.map(function(astVar) {
         return astVar.definitions.map(function(definition) {
           return definition;
@@ -19184,6 +19190,7 @@
         "void p2iOS_init() {\n" +
         variableDefinitions.join(';\n') + ";\n" +
         "};\n\n" +
+        methodDeclarations.join(';\n') + ";\n" +
         classes.join('') + "\n" +
         //otherStatements.join('') + "\n})";
         otherStatements.join('')/* + "\n};"*/; // TODO remove stray per-variable semicolon ... 

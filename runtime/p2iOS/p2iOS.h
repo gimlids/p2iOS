@@ -40,6 +40,10 @@ namespace p2iOS
     int mouseX;
     int mouseY;
     
+    // modes
+    bool noLoopWasCalled = false;
+    bool userWantsDrawLoop = true;
+    
    template <class T>
    class JavaArray
    {
@@ -118,6 +122,7 @@ namespace p2iOS
        height = _height;
    };
 
+    void noLoop() { /*noLoopWasCalled = true;*/ NSLog(@"p2iOS warning: noLoop() was called, but is not yet implemented."); }
    //===========================================
    // math
    //===========================================
@@ -168,57 +173,18 @@ namespace p2iOS
 
 
 
-   /* TODO http://processing.org/reference/background_.html
-   background(gray, alpha)
-   background(value1, value2, value3)
-   background(value1, value2, value3, alpha)
-   background(color)
-   background(color, alpha)
-   background(hex)
-   background(hex, alpha)
-   */
-
 
    //=========================================
    // drawing state functions
    //=========================================
 
-    void background(unsigned char gray)
-    {
-        ofBackground(gray);
-    };
-
-    void frameRate(int fps)
-    {
-        ofSetFrameRate(fps);
-    }
+    void background(unsigned char gray) { ofBackground(gray); }
+    void frameRate(int fps) { ofSetFrameRate(fps); }
     
-    /* TODO http://processing.org/reference/fill_.html
-     
-     fill(value1, value2, value3)
-     fill(value1, value2, value3, alpha)
-     fill(color)
-     fill(color, alpha)
-     fill(hex)
-     fill(hex, alpha)
-     */
-
+    void fill(unsigned char gray, unsigned char alpha) { ofSetColor(gray, gray, gray, alpha); } // TODO implement fill color state
+    void fill(int gray) { ofSetColor(gray); }
     
-    void fill(unsigned char gray, unsigned char alpha)
-    {
-        ofSetColor(gray, gray, gray, alpha); // TODO implement fill color state
-    };
-    
-    void fill(int gray)
-    {
-        ofSetColor(gray);
-    }
-    
-    void stroke(int gray)
-    {
-        ofSetColor(gray);
-    };
-    
+    void stroke(int gray) { ofSetColor(gray); };
    void noStroke()
    {
        
@@ -250,7 +216,7 @@ namespace p2iOS
        ofEllipse(x, y, width, height);
    };
 
-   class p2iOSApp : public ofxiPhoneApp {
+   class p2iOSApp : public ofxiPhoneApp {       
    public:
        void setup(){	
            // register touch events
@@ -277,9 +243,12 @@ namespace p2iOS
        };
        void update() {       };
        void draw() {
-          // call the processing draw()
-           //NSLog(@"enter p2iOS::draw()");
-           p2iOS_user::draw();
+           if(userWantsDrawLoop)
+           {
+               p2iOS_user::draw();
+               if(noLoopWasCalled)
+                   userWantsDrawLoop = false;
+           }
        };
        void exit() { };
       
