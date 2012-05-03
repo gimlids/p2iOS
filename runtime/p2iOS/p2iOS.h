@@ -194,7 +194,7 @@ namespace p2iOS
     }
     
     /* TODO http://processing.org/reference/fill_.html
-     fill(gray)
+     
      fill(value1, value2, value3)
      fill(value1, value2, value3, alpha)
      fill(color)
@@ -202,13 +202,17 @@ namespace p2iOS
      fill(hex)
      fill(hex, alpha)
      */
+
+    
     void fill(unsigned char gray, unsigned char alpha)
     {
-        ofStyle currentStyle = ofGetStyle();
-        currentStyle.bFill = true;
-        currentStyle.bgColor.setHsb(0, 0, float(gray) / 255.0, float(alpha) / 255.0);
-        ofSetStyle(currentStyle);
+        ofSetColor(gray, gray, gray, alpha); // TODO implement fill color state
     };
+    
+    void fill(int gray)
+    {
+        ofSetColor(gray);
+    }
     
     void stroke(int gray)
     {
@@ -234,6 +238,11 @@ namespace p2iOS
    void line(float x1, float y1, float x2, float y2)
     {
         ofLine(x1, y1, x2, y2);
+    }
+    
+    void rect(float x, float y, float width, float height)
+    {
+        ofRect(x, y, width, height);
     }
     
    void ellipse(float x, float y, float width, float height)
