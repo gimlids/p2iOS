@@ -20,6 +20,8 @@ int main(int argc, char** argv) { \
 
 #undef TWO_PI
 
+typedef bool boolean;
+
 namespace p2iOS_user {
     void p2iOS_init();
     void setup();
@@ -144,11 +146,21 @@ namespace p2iOS
     
     void fill(unsigned char gray, unsigned char alpha) { ofSetColor(gray, gray, gray, alpha); } // TODO implement fill color state
     void fill(int gray) { ofSetColor(gray); }
+    void noFill() { NSLog(@"p2iOS warning: noFill() is not implemented"); }
     
+    void strokeWeight(float width) { NSLog(@"p2iOS warning: strokeWeight() is not implemented"); }
+    
+    void stroke(int gray, int alpha) { ofSetColor(gray, gray, gray, alpha); }
     void stroke(int gray) { ofSetColor(gray); }
-    void noStroke() { NSLog(@"p2ios warning: noStroke() is not implemented"); }
+    void noStroke() { NSLog(@"p2iOS warning: noStroke() is not implemented"); }
+    
     void smooth() { ofEnableSmoothing(); }
 
+    void pushMatrix() { ofPushMatrix(); }
+    void popMatrix() { ofPopMatrix(); }
+    void translate(float x, float y) { ofTranslate(x, y); }
+    void rotate(float angle) { ofRotate(angle * 360.0 / TWO_PI); }
+    
    //==========================================
    // drawing functions
    //==========================================
