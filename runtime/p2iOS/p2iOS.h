@@ -112,9 +112,6 @@ namespace p2iOS
    // initialization functions
    //==========================================
 
-   /* TODO: http://processing.org/reference/size_.html
-   size(width, height, MODE)
-   */
    void size(int _width, int _height)
    {
        ofSetWindowShape(_width, _height);
@@ -122,58 +119,21 @@ namespace p2iOS
        height = _height;
    };
 
-    void noLoop() { /*noLoopWasCalled = true;*/ NSLog(@"p2iOS warning: noLoop() was called, but is not yet implemented."); }
-   //===========================================
+    void noLoop() { /*noLoopWasCalled = true;*/ NSLog(@"p2iOS warning: noLoop() is not implemented"); }
+   
+    //===========================================
    // math
    //===========================================
 
-   float sqrt(float value)
-   {
-      return sqrtf(value);
-   };
-
-   float atan2(float y, float x)
-   {
-       return atan2f(y, x);
-   };
-
-   float cos(float angle)
-   {
-      return cosf(angle);
-   };
-
-   float sin(float angle)
-   {
-      return sinf(angle);
-   };
-
-   float random(float low, float high)
-   {
-       return low + (high - low) * (float)rand()/(float)RAND_MAX;
-   };
-
-   float random(float high)
-   {
-      return random(0, high);
-   };
-
-    float radians(float degrees)
-    {
-        return degrees * TWO_PI / 360.0;
-    }
-    
-    float dist(float x1, float y1, float x2, float y2)
-    {
-        return sqrtf((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
-    }
-    
-   // =======================================
-   // functions that take colors
-   // =======================================
-
-
-
-
+   float sqrt(float value) { return sqrtf(value); }
+   float atan2(float y, float x) { return atan2f(y, x); }
+   float cos(float angle) { return cosf(angle); }
+   float sin(float angle) { return sinf(angle); }
+   float random(float low, float high) { return low + (high - low) * (float)rand()/(float)RAND_MAX; }
+   float random(float high) { return random(0, high); }
+   float radians(float degrees) { return degrees * TWO_PI / 360.0; }
+   float dist(float x1, float y1, float x2, float y2) { return sqrtf((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2)); }
+ 
    //=========================================
    // drawing state functions
    //=========================================
@@ -184,18 +144,9 @@ namespace p2iOS
     void fill(unsigned char gray, unsigned char alpha) { ofSetColor(gray, gray, gray, alpha); } // TODO implement fill color state
     void fill(int gray) { ofSetColor(gray); }
     
-    void stroke(int gray) { ofSetColor(gray); };
-   void noStroke()
-   {
-       
-// TODO implement noStroke()
-   };
-
-   // TODO http://processing.org/reference/smooth_.html
-   void smooth()
-   {
-// TODO implement smooth()
-   };
+    void stroke(int gray) { ofSetColor(gray); }
+    void noStroke() { NSLog(@"p2ios warning: noStroke() is not implemented"); }
+    void smooth() { ofEnableSmoothing(); }
 
    //==========================================
    // drawing functions
