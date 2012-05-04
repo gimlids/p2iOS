@@ -19,6 +19,9 @@ int main(int argc, char** argv) { \
 }
 
 #undef TWO_PI
+#undef PI
+
+#define null NULL
 
 typedef bool boolean;
 
@@ -32,7 +35,8 @@ namespace p2iOS
 {
     
     // constants
-    float TWO_PI = 6.28318530717958647693;
+    double TWO_PI = 6.28318530717958647693;
+    double PI = 3.14159265358979323846;
     
     // drawing state
    int width;
