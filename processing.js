@@ -19145,7 +19145,7 @@
           variables.push(statement);
         } else if(statement instanceof AstMethod) {
           methods.push(statement);
-          otherStatements.push(statement);
+          //otherStatements.push(statement);
 
           if(statement.name == "draw")
              haveDrawMethod = true;
@@ -19203,12 +19203,15 @@
         //this.appName + "() {\n" +
         "void p2iOS_init() {\n" +
         variableDefinitions.join(';\n') + ";\n" +
+        otherStatements.join('') +
         "};\n\n" +
         methodDeclarations.join(';\n') + ";\n" +
         stubsAsNeeded + "\n" +
         classes.join('') + "\n" +
         //otherStatements.join('') + "\n})";
-        otherStatements.join('')/* + "\n};"*/; // TODO remove stray per-variable semicolon ... 
+        methods.join('')
+        //otherStatements.join('')/* + "\n};"*/
+        ; // TODO remove stray per-variable semicolon ... 
       replaceContext = null;
       return result + "}\n\nP2IOS_MAIN";
     };
