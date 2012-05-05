@@ -160,7 +160,10 @@ namespace p2iOS
     //===========================================
    // math
    //===========================================
-
+    
+   int abs(int value) { return max(value, -value); }
+   float abs(float value) { return max(value, -value); }
+   float sq(float value) { return value * value; }
    float sqrt(float value) { return sqrtf(value); }
    float atan2(float y, float x) { return atan2f(y, x); }
    float cos(float angle) { return cosf(angle); }
@@ -170,15 +173,32 @@ namespace p2iOS
    float radians(float degrees) { return degrees * TWO_PI / 360.0; }
    float dist(float x1, float y1, float x2, float y2) { return sqrtf((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2)); }
  
-    template <class T>
-    T min(T a, T b) { return std::min(a, b); }
+   template <class T> T min(T a, T b) { return std::min(a, b); }
+   template <class T> T max(T a, T b) { return std::max(a, b); }
     
-    float constrain(float value, float min, float max) {
-        return std::min(max, std::max(min, value));
+   float constrain(float value, float min, float max) {
+      return std::min(max, std::max(min, value));
+   }
+    
+   float map(float value, float low_in, float high_in, float low_out, float high_out) { return low_out + (high_out - low_out) * ((value - low_in) / (high_in - low_in)); }
+   float norm(float value, float low, float high) { return map(value, low, high, 0., 1.); }
+    
+    int ceil(float value) { return std::ceil(value); }
+    float exp(float value) { return std::exp(value); }
+    int floor(float value) { return std::floor(value); }
+    float lerp(float min, float max, float amount) { return map(amount, 0.0, 1.0, min, max); }
+    float log(float value) { return std::log(value); }
+    float mag(float a, float b, float c) { return sqrt(a*a + b*b + c*c); }
+    float mag(float a, float b) { return mag(a, b, 0.0); }
+    float pow(float base, float exponent) { return std::pow(base, exponent); }
+    int round(float value) {
+        int high = ceil(value);
+        int low = floor(value);
+        if(high - value < value - low)
+            return high;
+        else
+            return low;
     }
-    
-    float map(float value, float low_in, float high_in, float low_out, float high_out) { return low_out + (high_out - low_out) * ((value - low_in) / (high_in - low_in)); }
-    float norm(float value, float low, float high) { return map(value, low, high, 0., 1.); }
     
     /////////////////////////////////////////
     // Time
