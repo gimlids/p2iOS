@@ -247,6 +247,13 @@ namespace p2iOS
        }
        
    };
+    
+    void bezier(float anchor1x, float anchor1y,
+                float control1x, float control1y,
+                float control2x, float control2y,
+                float anchor2x, float anchor2y) {
+        ofBezier(anchor1x, anchor1y, control1x, control1y, control2x, control2y, anchor2x, anchor2y);
+    }
 
    class p2iOSApp : public ofxiPhoneApp {       
    public:
@@ -272,7 +279,6 @@ namespace p2iOS
            _colorMode.range3 = 255;
            _colorMode.range4 = 255;
            
-           p2iOS_user::p2iOS_init();
                       
        };
        void update() {       };
@@ -281,7 +287,11 @@ namespace p2iOS
            // run user setup in draw because often processing sketches draw in setup() and have no draw()
            if(!ranUserSetup)
            {
+               
+               p2iOS_user::p2iOS_init();
+               
                p2iOS_user::setup();
+               
                ranUserSetup = true;
                // FIXME let user do only one draw loop and keep showing the result
            }
