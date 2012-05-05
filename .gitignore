@@ -2,6 +2,8 @@ release/
 dist/
 logs/
 
+openFrameworks
+
 Unsaved\ Document*
 .DS_Store
 *.swp

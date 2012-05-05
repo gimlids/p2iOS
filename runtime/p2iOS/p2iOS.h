@@ -34,6 +34,10 @@ namespace p2iOS_user {
 namespace p2iOS
 {
     
+    ////////////////////////////////////////////////
+    // Processing Symbols
+    ////////////////////////////////////////////////
+    
     // constants
     double TWO_PI = 6.28318530717958647693;
     double PI = 3.14159265358979323846;
@@ -46,10 +50,33 @@ namespace p2iOS
     int mouseX;
     int mouseY;
     
+    
+    ////////////////////////////////////////////////
+    // Processing State 
+    ////////////////////////////////////////////////
+    
     // modes
+    enum ColorSpace { RGB };
+    class ColorMode {
+    public:
+        ColorSpace space;
+        float range1;
+        float range2;
+        float range3;
+        float range4;
+    };
+    ColorMode _colorMode;
+    
+    enum EllipseMode { CENTER };
+    EllipseMode _ellipseMode;
+    
     bool noLoopWasCalled = false;
     bool userWantsDrawLoop = true;
     bool ranUserSetup = false;
+    
+    ////////////////////////////////////////////////
+    // Java implementations
+    ////////////////////////////////////////////////
     
    template <class T>
    class JavaArray
@@ -116,7 +143,7 @@ namespace p2iOS
    };
     
    //==========================================
-   // initialization functions
+   // Processing APIs
    //==========================================
 
    void size(int _width, int _height)
@@ -145,10 +172,26 @@ namespace p2iOS
    // drawing state functions
    //=========================================
 
+    void ellipseMode(EllipseMode mode) {
+        _ellipseMode = mode;
+    }
+    
+    // TODO does this apply only to 4 param color commands?
+    void colorMode(ColorSpace space, float range1, float range2, float range3, float range4) {
+        _colorMode.space = space;
+        _colorMode.range1 = range1;
+        _colorMode.range2 = range2;
+        _colorMode.range3 = range3;
+        _colorMode.range4 = range4;
+    }
+    
     void background(unsigned char gray) { ofBackground(gray); }
     void frameRate(int fps) { ofSetFrameRate(fps); }
     
-    void fill(unsigned char gray, unsigned char alpha) { ofSetColor(gray, gray, gray, alpha); } // TODO implement fill color state
+    void fill(unsigned char gray, unsigned char alpha) {
+        // TODO implement fill color state
+        ofSetColor(gray, gray, gray, (alpha / _colorMode.range4) * 255);
+    } 
     void fill(int gray) { ofSetColor(gray); }
     void noFill() { NSLog(@"p2iOS warning: noFill() is not implemented"); }
     
@@ -181,27 +224,37 @@ namespace p2iOS
     
    void ellipse(float x, float y, float width, float height)
    {
-       ofEllipse(x, y, width, height);
+       switch(_ellipseMode) {
+           case CENTER:
+               ofEllipse(x - width/2., y - height/2., width, height);
+               break;
+       }
+       
    };
 
    class p2iOSApp : public ofxiPhoneApp {       
    public:
        void setup(){	
-           // register touch events
            ofRegisterTouchEvents(this);
-           
-           // initialize the accelerometer
-           ofxAccelerometer.setup();
-           
-           //iPhoneAlerts will be sent to this.
+           //ofxAccelerometer.setup();
            ofxiPhoneAlerts.addListener(this);
            
            //If you want a landscape oreintation 
            //iPhoneSetOrientation(OFXIPHONE_ORIENTATION_LANDSCAPE_RIGHT);
            
-           //ofBackground(127,127,127);
+           // Processing default background is "light gray" http://processing.org/reference/background_.html
+           ofBackground(192, 192, 192);
            
+           // processing state init
            srand((unsigned)time(0));
+           
+           _ellipseMode = CENTER;
+           
+           _colorMode.space = RGB;
+           _colorMode.range1 = 255;
+           _colorMode.range2 = 255;
+           _colorMode.range3 = 255;
+           _colorMode.range4 = 255;
            
            p2iOS_user::p2iOS_init();
                       
