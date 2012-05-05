@@ -173,6 +173,10 @@ namespace p2iOS
     template <class T>
     T min(T a, T b) { return std::min(a, b); }
     
+    float constrain(float value, float min, float max) {
+        return std::min(max, std::max(min, value));
+    }
+    
     float map(float value, float low_in, float high_in, float low_out, float high_out) { return low_out + (high_out - low_out) * ((value - low_in) / (high_in - low_in)); }
     float norm(float value, float low, float high) { return map(value, low, high, 0., 1.); }
     
