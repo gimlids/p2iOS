@@ -18,6 +18,7 @@ int main(int argc, char** argv) { \
    return 0; \
 }
 
+#undef HALF_PI
 #undef TWO_PI
 #undef PI
 
@@ -41,6 +42,7 @@ namespace p2iOS
     // constants
     double TWO_PI = 6.28318530717958647693;
     double PI = 3.14159265358979323846;
+    double HALF_PI = 1.57079632679489661923;
     
     // drawing state
    int width;
@@ -168,6 +170,20 @@ namespace p2iOS
    float radians(float degrees) { return degrees * TWO_PI / 360.0; }
    float dist(float x1, float y1, float x2, float y2) { return sqrtf((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2)); }
  
+    template <class T>
+    T min(T a, T b) { return std::min(a, b); }
+    
+    float map(float value, float low_in, float high_in, float low_out, float high_out) { return low_out + (high_out - low_out) * ((value - low_in) / (high_in - low_in)); }
+    float norm(float value, float low, float high) { return map(value, low, high, 0., 1.); }
+    
+    /////////////////////////////////////////
+    // Time
+    /////////////////////////////////////////
+    
+    int second() { return ofGetSeconds(); }
+    int minute() { return ofGetMinutes(); }
+    int hour() { return ofGetHours(); }
+    
    //=========================================
    // drawing state functions
    //=========================================
@@ -211,7 +227,7 @@ namespace p2iOS
    //==========================================
    // drawing functions
    //==========================================
-
+    
    void line(float x1, float y1, float x2, float y2)
     {
         ofLine(x1, y1, x2, y2);
