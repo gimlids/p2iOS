@@ -24,3 +24,4 @@ cp -R $template_path $app_dir
 ./tools/pde2cpp.py $js $1 > $output_path
 astyle $output_path
 rm $output_path.orig
+cp $1 $app_dir/src/
