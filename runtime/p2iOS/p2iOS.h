@@ -58,7 +58,7 @@ namespace p2iOS
     ////////////////////////////////////////////////
     
     // modes
-    enum ColorSpace { RGB };
+    enum ColorSpace { RGB, HSB };
     class ColorMode {
     public:
         ColorSpace space;
@@ -172,17 +172,12 @@ namespace p2iOS
    float random(float high) { return random(0, high); }
    float radians(float degrees) { return degrees * TWO_PI / 360.0; }
    float dist(float x1, float y1, float x2, float y2) { return sqrtf((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2)); }
- 
    template <class T> T min(T a, T b) { return std::min(a, b); }
    template <class T> T max(T a, T b) { return std::max(a, b); }
-    
    float constrain(float value, float min, float max) {
-      return std::min(max, std::max(min, value));
-   }
-    
+      return std::min(max, std::max(min, value)); }
    float map(float value, float low_in, float high_in, float low_out, float high_out) { return low_out + (high_out - low_out) * ((value - low_in) / (high_in - low_in)); }
    float norm(float value, float low, float high) { return map(value, low, high, 0., 1.); }
-    
     int ceil(float value) { return std::ceil(value); }
     float exp(float value) { return std::exp(value); }
     int floor(float value) { return std::floor(value); }
@@ -225,12 +220,34 @@ namespace p2iOS
         _colorMode.range4 = range4;
     }
     
+    void colorMode(ColorSpace space, float range1, float range2, float range3) {
+        colorMode(space, range1, range2, range3, _colorMode.range4);
+    }
+    
     void background(unsigned char gray) { ofBackground(gray); }
     void frameRate(int fps) { ofSetFrameRate(fps); }
     
     void fill(unsigned char gray, unsigned char alpha) {
-        // TODO implement fill color state
+        // TODO actually implement fill/stroke
         ofSetColor(gray, gray, gray, (alpha / _colorMode.range4) * 255);
+    } 
+    void fill(float value1, float value2, float value3) {
+        // TODO actually implement fill/stroke
+        switch(_colorMode.space) {
+            case RGB:
+                ofSetColor(255 * value1 / _colorMode.range1,
+                           255 * value2 / _colorMode.range2,
+                           255 * value3 / _colorMode.range3);
+                break;
+            case HSB:
+                ofColor color;
+                color.setHsb(255 * value1 / _colorMode.range1,
+                             255 * value2 / _colorMode.range2,
+                             255 * value3 / _colorMode.range3);
+                ofSetColor(color);
+                break;
+        }
+        
     } 
     void fill(int gray) { ofSetColor(gray); }
     void noFill() { NSLog(@"p2iOS warning: noFill() is not implemented"); }
