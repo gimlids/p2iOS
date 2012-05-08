@@ -287,7 +287,7 @@ namespace p2iOS
    {
        switch(_ellipseMode) {
            case CENTER:
-               ofEllipse(x - width/2., y - height/2., width, height);
+               ofEllipse(x, y, width, height);
                break;
        }
        
