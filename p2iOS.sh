@@ -16,7 +16,7 @@ template_path="$apps_dir/p2iOSApp"
 app_dir="$apps_dir/$example_name"
 output_path="$app_dir/src/main.mm"
 
-
+rm -r $app_dir
 cp -R $template_path $app_dir
 #mv $app_dir/p2iOSApp.xcodeproj $app_dir/$example_name.xcodeproj
 

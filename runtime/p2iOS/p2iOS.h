@@ -10,6 +10,8 @@
 #include "ofxiPhone.h"
 #include "ofxiPhoneExtras.h"
 
+#define OVERRIDE_WINDOW_SIZE_CALLS
+
 #define P2IOS_MAIN \
 int main(int argc, char** argv) { \
    printf("p2iOS says hello world!\n"); \
@@ -150,9 +152,11 @@ namespace p2iOS
 
    void size(int _width, int _height)
    {
+       #ifndef OVERRIDE_WINDOW_SIZE_CALLS
        ofSetWindowShape(_width, _height);
        width = _width;
        height = _height;
+       #endif
    };
 
     void noLoop() { /*noLoopWasCalled = true;*/ NSLog(@"p2iOS warning: noLoop() is not implemented"); }
@@ -319,8 +323,11 @@ namespace p2iOS
            _colorMode.range2 = 255;
            _colorMode.range3 = 255;
            _colorMode.range4 = 255;
+          
+ 
+           width = ofGetWidth();
+           height = ofGetHeight();
            
-                      
        };
        void update() {       };
        void draw() {
